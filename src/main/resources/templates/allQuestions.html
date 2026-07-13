@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:javascript="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Lista pitanja</h1>
+
+<div th:each="q : ${questions}">
+    <p th:text="${q.id + '. ' + q.questionTitle}"></p>
+</div>
+<a href="javascript:history.back()">Nazad</a>
+<a th:href="@{/question/quiz}">Kviz</a>
+</body>
+</html>

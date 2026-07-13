@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>Pitanja</h1>
+<form action="quiz/submit" method="post">
+
+    <div th:each="q : ${fiveQuestions}">
+        <p th:text="${q.questionTitle}"></p>
+
+        <label>
+            <input type="radio" th:name="${q.id}" th:value="${q.option1}">
+            <span th:text="${q.option1}"></span>
+        </label>
+
+        <label>
+            <input type="radio" th:name="${q.id}" th:value="${q.option2}">
+            <span th:text="${q.option2}"></span>
+        </label>
+
+        <label>
+            <input type="radio" th:name="${q.id}" th:value="${q.option3}">
+            <span th:text="${q.option3}"></span>
+        </label>
+
+        <label>
+            <input type="radio" th:name="${q.id}" th:value="${q.option4}">
+            <span th:text="${q.option4}"></span>
+        </label>
+
+        <hr/>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+<a href="javascript:history.back()">Nazad</a>
+</body>
+</html>
