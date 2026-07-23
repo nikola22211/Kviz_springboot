@@ -8,7 +8,7 @@
 <h1>Pitanja</h1>
 <form action="quiz/submit" method="post">
 
-    <div th:each="q : ${fiveQuestions}">
+    <div th:each="q : ${questions}">
         <p th:text="${q.questionTitle}"></p>
 
         <label>

@@ -1,9 +1,13 @@
 package org.primer.kviz.controller;
 
 
+import jakarta.persistence.Entity;
+import lombok.Data;
+import org.primer.kviz.model.QuizQuestions;
 import org.primer.kviz.model.Statistics;
 import org.primer.kviz.model.Question;
 import org.primer.kviz.service.QuestionService;
+import org.primer.kviz.service.QuizQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +24,14 @@ public class HTMLQuestionController {
 
     private final QuestionService questionService;
     private List<Question> fiveQuestions;
-    private Statistics statistics;;
+    private Statistics statistics;
+    private final QuizQuestionService quizQuestionService;
 
     @Autowired
-    public HTMLQuestionController(QuestionService qs, Statistics statistics){
+    public HTMLQuestionController(QuestionService qs, Statistics statistics,QuizQuestionService quizQuestionService){
         questionService = qs;
         this.statistics = statistics;
+        this.quizQuestionService = quizQuestionService;
     }
 
     @GetMapping("/")
@@ -42,8 +48,17 @@ public class HTMLQuestionController {
     }
 
     @GetMapping("/quiz")
-    public String getQuiz(Model model){
-        Random r = new Random();
+    public String getQuiz(Model model) {
+        List<QuizQuestions> questions = quizQuestionService.vratiPitanja(1);
+
+        List<Question> q1 = new ArrayList<>();
+        for(QuizQuestions qq : questions){
+            q1.add(questionService.getQuestionById(qq.getQuestions_id()).getBody());
+        }
+        model.addAttribute("questions",q1);
+        return "quiz";
+    }
+       /* Random r = new Random();
         List<Question> questions = questionService.getAllQuestions().getBody();
         fiveQuestions = new ArrayList<>();
         List<Integer> randbrojevi = new ArrayList<>();
@@ -58,7 +73,7 @@ public class HTMLQuestionController {
         }
         model.addAttribute("fiveQuestions",fiveQuestions);
         return "quiz";
-    }
+    }*/
 
 
    /* Ukratko
