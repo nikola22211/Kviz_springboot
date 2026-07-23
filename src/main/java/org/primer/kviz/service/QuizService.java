@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -41,15 +42,19 @@ public class QuizService {
     }
 
     public ResponseEntity<List<QuestionWrapper>> getQuizQuestions(Integer id){
-        Optional<Quiz> quiz = quizDao.findById(id);
-        List<Question> questionsFromDB = quiz.get().getQuestions();
-        List<QuestionWrapper> questionsForUser = new ArrayList<>();
-
-        for(Question q : questionsFromDB){
-            QuestionWrapper qw = new QuestionWrapper(q.getId(),q.getQuestionTitle(),q.getOption1(),
-                    q.getOption2(),q.getOption3(),q.getOption4());
-            questionsForUser.add(qw);
+        try {
+            Optional<Quiz> quiz = quizDao.findById(id);
+            List<Question> questionsFromDB = quiz.get().getQuestions();
+            List<QuestionWrapper> questionsForUser = new ArrayList<>();
+            for (Question q : questionsFromDB) {
+                QuestionWrapper qw = new QuestionWrapper(q.getId(), q.getQuestionTitle(), q.getOption1(),
+                        q.getOption2(), q.getOption3(), q.getOption4());
+                questionsForUser.add(qw);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(questionsForUser);
+        }catch (NoSuchElementException e){
+            System.out.println("nema tog elementa");
+            return null;
         }
-        return ResponseEntity.status(HttpStatus.OK).body(questionsForUser);
     }
 }
