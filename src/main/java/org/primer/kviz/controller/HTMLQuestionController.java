@@ -1,22 +1,18 @@
 package org.primer.kviz.controller;
 
 
-import jakarta.persistence.Entity;
-import lombok.Data;
-import org.primer.kviz.model.QuizQuestions;
+import org.primer.kviz.dao.QuizDao;
+import org.primer.kviz.model.Quiz;
 import org.primer.kviz.model.Statistics;
 import org.primer.kviz.model.Question;
 import org.primer.kviz.service.QuestionService;
-import org.primer.kviz.service.QuizQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 @Controller
 @RequestMapping("/question")
@@ -25,13 +21,13 @@ public class HTMLQuestionController {
     private final QuestionService questionService;
     private List<Question> fiveQuestions;
     private Statistics statistics;
-    private final QuizQuestionService quizQuestionService;
+    private final QuizDao quizDao;
 
     @Autowired
-    public HTMLQuestionController(QuestionService qs, Statistics statistics,QuizQuestionService quizQuestionService){
+    public HTMLQuestionController(QuestionService qs, Statistics statistics,QuizDao quizDao){
         questionService = qs;
         this.statistics = statistics;
-        this.quizQuestionService = quizQuestionService;
+        this.quizDao = quizDao;
     }
 
     @GetMapping("/")
@@ -47,15 +43,15 @@ public class HTMLQuestionController {
         return "allQuestions";
     }
 
-    @GetMapping("/quiz")
-    public String getQuiz(Model model) {
-        List<QuizQuestions> questions = quizQuestionService.vratiPitanja(1);
+    @GetMapping("/quiz/{id}")
+    public String getQuiz(@PathVariable(name="id")Integer id, Model model) {
 
-        List<Question> q1 = new ArrayList<>();
-        for(QuizQuestions qq : questions){
-            q1.add(questionService.getQuestionById(qq.getQuestions_id()).getBody());
-        }
-        model.addAttribute("questions",q1);
+        Quiz quiz = quizDao.findById(id).orElseThrow();
+
+        List<Question> questions = quiz.getQuestions();
+
+        model.addAttribute("questions", questions);
+
         return "quiz";
     }
        /* Random r = new Random();
