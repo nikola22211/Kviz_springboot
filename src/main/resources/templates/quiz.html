@@ -6,7 +6,7 @@
 </head>
 <body>
 <h1>Pitanja</h1>
-<form action="quiz/submit" method="post">
+<form th:action="@{/question/submit}" method="post">
 
     <div th:each="q : ${questions}">
         <p th:text="${q.questionTitle}"></p>

@@ -54,23 +54,6 @@ public class HTMLQuestionController {
 
         return "quiz";
     }
-       /* Random r = new Random();
-        List<Question> questions = questionService.getAllQuestions().getBody();
-        fiveQuestions = new ArrayList<>();
-        List<Integer> randbrojevi = new ArrayList<>();
-        for(int i=0;i<5;){
-            int br = r.nextInt(0,26);
-            if(randbrojevi.contains(br)){
-                continue;
-            }
-            fiveQuestions.add(questions.get(br));
-            randbrojevi.add(br);
-            i++;
-        }
-        model.addAttribute("fiveQuestions",fiveQuestions);
-        return "quiz";
-    }*/
-
 
    /* Ukratko
 
@@ -85,7 +68,7 @@ public class HTMLQuestionController {
     name=Jane
 
     Oba se u Spring MVC tretiraju kao request parameters.*/
-    @PostMapping("/quiz/submit")    //Ti ne praviš ovu mapu ručno. Spring je popuni na osnovu podataka iz forme.
+    @PostMapping("/submit")    //Ti ne praviš ovu mapu ručno. Spring je popuni na osnovu podataka iz forme.
     public String submitQuiz(@RequestParam Map<String,String> mapa, Model model) {
         statistics.setVisit(statistics.getVisit()+1);
         statistics.setRightAnswers(0);
